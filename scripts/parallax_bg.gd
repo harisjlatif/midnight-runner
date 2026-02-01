@@ -17,7 +17,7 @@ func _process(delta):
 		scroll_offset.x -= base_speed * delta
 
 func create_default_layers():
-	var screen_size = get_viewport_rect().size
+	var screen_size = get_viewport().get_visible_rect().size
 	
 	# Layer 0: Far background (stars/sky) - slowest
 	var layer0 = create_layer(0.1, Color(0.02, 0.01, 0.05), screen_size)
