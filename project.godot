@@ -1,5 +1,4 @@
 ; Godot 4.x Project File
-[gd_resource type="Environment" load_steps=2 format=3]
 
 config_version=5
 
@@ -14,12 +13,17 @@ config/icon="res://icon.svg"
 GameManager="*res://scripts/game_manager.gd"
 
 [display]
-window/size/viewport_width=1080
-window/size/viewport_height=1920
-window/size/mode=2
-window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+; Base resolution - standard mobile portrait (9:19.5 aspect for modern phones)
+window/size/viewport_width=390
+window/size/viewport_height=844
+; Desktop test window (scaled up for visibility)
+window/size/window_width_override=390
+window/size/window_height_override=844
+; Portrait orientation
 window/handheld/orientation=1
+; Stretch settings for different screen sizes
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_width"
 
 [input]
 swipe_left={
@@ -42,6 +46,9 @@ tap={
 "deadzone": 0.5,
 "events": []
 }
+
+[input_devices]
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 renderer/rendering_method="mobile"

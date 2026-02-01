@@ -18,7 +18,7 @@ base_speed = 100.0
 auto_scroll = true
 
 [node name="Runner" parent="." instance=ExtResource("3")]
-position = Vector2(54, 400)
+position = Vector2(47, 422)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -26,29 +26,29 @@ position = Vector2(54, 400)
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -75.0
-offset_top = 30.0
-offset_right = 75.0
-offset_bottom = 65.0
+offset_left = -60.0
+offset_top = 40.0
+offset_right = 60.0
+offset_bottom = 70.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 22
 text = "DEPTH: 1"
 horizontal_alignment = 1
 
 [node name="FragmentLabel" type="Label" parent="UI"]
-offset_left = 20.0
-offset_top = 740.0
-offset_right = 180.0
-offset_bottom = 775.0
+offset_left = 15.0
+offset_top = 790.0
+offset_right = 150.0
+offset_bottom = 820.0
 theme_override_colors/font_color = Color(0.6, 0.4, 1, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "◆ 0"
 
 [node name="HPBar" type="ProgressBar" parent="UI"]
-offset_left = 300.0
-offset_top = 745.0
-offset_right = 430.0
-offset_bottom = 770.0
+offset_left = 270.0
+offset_top = 795.0
+offset_right = 375.0
+offset_bottom = 815.0
 theme_override_styles/fill = null
 value = 100.0
 show_percentage = false
