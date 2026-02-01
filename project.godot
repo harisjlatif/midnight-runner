@@ -1,0 +1,48 @@
+; Godot 4.x Project File
+[gd_resource type="Environment" load_steps=2 format=3]
+
+config_version=5
+
+[application]
+config/name="Midnight Runner"
+config/description="How deep does the midnight go?"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.2", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+GameManager="*res://scripts/game_manager.gd"
+
+[display]
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/size/mode=2
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
+
+[input]
+swipe_left={
+"deadzone": 0.5,
+"events": []
+}
+swipe_right={
+"deadzone": 0.5,
+"events": []
+}
+swipe_up={
+"deadzone": 0.5,
+"events": []
+}
+swipe_down={
+"deadzone": 0.5,
+"events": []
+}
+tap={
+"deadzone": 0.5,
+"events": []
+}
+
+[rendering]
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
