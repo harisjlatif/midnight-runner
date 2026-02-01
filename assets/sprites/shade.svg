@@ -1,38 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="80" viewBox="0 0 64 80">
-  <defs>
-    <linearGradient id="shadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#2d1f4e"/>
-      <stop offset="100%" style="stop-color:#1a0a2e;stop-opacity:0.5"/>
-    </linearGradient>
-    <filter id="shadeGlow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40">
+  <!-- Shade - basic shadow creature, floaty bottom -->
   
-  <!-- Wispy body -->
-  <path d="M32 5 
-           Q50 15 48 35 
-           Q52 50 45 65
-           Q40 80 32 75
-           Q24 80 19 65
-           Q12 50 16 35
-           Q14 15 32 5" 
-        fill="url(#shadeGrad)" filter="url(#shadeGlow)"/>
+  <!-- Body (tapered, ghost-like) -->
+  <path d="M8 8 Q16 0 24 8 L26 28 Q24 40 16 38 Q8 40 6 28 Z" fill="#2d2d44"/>
   
-  <!-- Inner darkness -->
-  <ellipse cx="32" cy="40" rx="12" ry="20" fill="#0a0515" opacity="0.8"/>
+  <!-- Inner shadow -->
+  <path d="M10 10 Q16 4 22 10 L23 26 Q22 35 16 34 Q10 35 9 26 Z" fill="#1f1f33"/>
   
-  <!-- Eyes (menacing red) -->
-  <ellipse cx="25" cy="30" rx="4" ry="3" fill="#ff4466" filter="url(#shadeGlow)"/>
-  <ellipse cx="39" cy="30" rx="4" ry="3" fill="#ff4466" filter="url(#shadeGlow)"/>
+  <!-- Eyes (red, menacing) -->
+  <ellipse cx="12" cy="16" rx="3" ry="4" fill="#ff3333">
+    <animate attributeName="opacity" values="1;0.6;1" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="20" cy="16" rx="3" ry="4" fill="#ff3333">
+    <animate attributeName="opacity" values="1;0.6;1" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
   
-  <!-- Wispy tendrils -->
-  <path d="M20 60 Q15 70 10 75" stroke="#2d1f4e" stroke-width="3" fill="none" opacity="0.6"/>
-  <path d="M44 60 Q49 70 54 75" stroke="#2d1f4e" stroke-width="3" fill="none" opacity="0.6"/>
-  <path d="M28 65 Q25 75 22 80" stroke="#1a0a2e" stroke-width="2" fill="none" opacity="0.4"/>
-  <path d="M36 65 Q39 75 42 80" stroke="#1a0a2e" stroke-width="2" fill="none" opacity="0.4"/>
+  <!-- Wispy bottom tendrils -->
+  <path d="M8 32 Q6 38 8 40" stroke="#2d2d44" stroke-width="2" fill="none"/>
+  <path d="M16 36 Q16 42 14 44" stroke="#2d2d44" stroke-width="2" fill="none"/>
+  <path d="M24 32 Q26 38 24 40" stroke="#2d2d44" stroke-width="2" fill="none"/>
 </svg>

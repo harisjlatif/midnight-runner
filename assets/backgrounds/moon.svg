@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+  <!-- Moon with glow -->
+  
+  <!-- Outer glow -->
+  <circle cx="60" cy="60" r="58" fill="#aaccff" opacity="0.1"/>
+  <circle cx="60" cy="60" r="50" fill="#bbddff" opacity="0.15"/>
+  <circle cx="60" cy="60" r="42" fill="#cceeff" opacity="0.2"/>
+  
+  <!-- Moon surface -->
+  <circle cx="60" cy="60" r="35" fill="#e8f0ff"/>
+  
+  <!-- Moon craters (subtle) -->
+  <circle cx="50" cy="50" r="6" fill="#d0ddef" opacity="0.5"/>
+  <circle cx="70" cy="65" r="8" fill="#d0ddef" opacity="0.4"/>
+  <circle cx="55" cy="72" r="4" fill="#d0ddef" opacity="0.5"/>
+  <circle cx="68" cy="48" r="3" fill="#d0ddef" opacity="0.4"/>
+  
+  <!-- Bright core -->
+  <circle cx="60" cy="60" r="30" fill="#f5faff" opacity="0.6"/>
+</svg>

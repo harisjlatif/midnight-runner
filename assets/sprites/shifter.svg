@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 30 36">
+  <!-- Shifter - agile, angular, changes lanes -->
+  
+  <!-- Body (angular, dynamic shape) -->
+  <polygon points="15,2 28,12 26,32 15,36 4,32 2,12" fill="#4a3328"/>
+  
+  <!-- Inner pattern -->
+  <polygon points="15,6 24,14 22,28 15,31 8,28 6,14" fill="#3a2520"/>
+  
+  <!-- Eyes (yellow, alert) -->
+  <polygon points="10,14 8,18 12,18" fill="#ffcc00">
+    <animate attributeName="opacity" values="1;0.7;1" dur="0.8s" repeatCount="indefinite"/>
+  </polygon>
+  <polygon points="20,14 18,18 22,18" fill="#ffcc00">
+    <animate attributeName="opacity" values="1;0.7;1" dur="0.8s" repeatCount="indefinite"/>
+  </polygon>
+  
+  <!-- Speed lines (indicate movement) -->
+  <line x1="0" y1="16" x2="4" y2="18" stroke="#ffcc00" stroke-width="1" opacity="0.4"/>
+  <line x1="0" y1="20" x2="3" y2="20" stroke="#ffcc00" stroke-width="1" opacity="0.3"/>
+  <line x1="26" y1="16" x2="30" y2="18" stroke="#ffcc00" stroke-width="1" opacity="0.4"/>
+  <line x1="27" y1="20" x2="30" y2="20" stroke="#ffcc00" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Claws -->
+  <polygon points="4,28 0,34 6,32" fill="#4a3328"/>
+  <polygon points="26,28 30,34 24,32" fill="#4a3328"/>
+</svg>

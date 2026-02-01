@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="120" viewBox="0 0 60 120">
+  <!-- Dead tree silhouette -->
+  
+  <!-- Trunk -->
+  <path d="M25 120 L27 60 L30 40 L28 20 L32 10 L30 0" 
+        stroke="#0a0f18" stroke-width="6" fill="none" stroke-linecap="round"/>
+  
+  <!-- Main branches -->
+  <path d="M28 30 Q15 25 5 35" stroke="#0a0f18" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M30 25 Q45 15 55 25" stroke="#0a0f18" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M27 50 Q10 45 0 55" stroke="#0a0f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M29 55 Q50 50 60 60" stroke="#0a0f18" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Smaller branches -->
+  <path d="M10 32 Q5 25 0 30" stroke="#0a0f18" stroke-width="2" fill="none"/>
+  <path d="M50 22 Q55 15 60 18" stroke="#0a0f18" stroke-width="2" fill="none"/>
+  <path d="M5 52 Q0 48 -5 55" stroke="#0a0f18" stroke-width="2" fill="none"/>
+  <path d="M55 58 Q60 55 65 60" stroke="#0a0f18" stroke-width="2" fill="none"/>
+  
+  <!-- Roots -->
+  <path d="M25 120 Q15 115 10 120" stroke="#0a0f18" stroke-width="4" fill="none"/>
+  <path d="M30 120 Q40 115 50 120" stroke="#0a0f18" stroke-width="4" fill="none"/>
+</svg>
