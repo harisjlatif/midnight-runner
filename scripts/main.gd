@@ -12,7 +12,6 @@ var depth_threshold: float = 1000.0  # Distance per depth level
 
 @onready var runner: CharacterBody2D = $Runner
 @onready var ui: CanvasLayer = $UI
-@onready var background: ParallaxBackground = $ParallaxBackground
 @onready var spawn_point: Marker2D = $SpawnPoint
 
 func _ready():
