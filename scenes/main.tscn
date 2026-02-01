@@ -1,63 +1,136 @@
-[gd_scene load_steps=5 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/runner.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/monster.tscn" id="3"]
+[ext_resource type="Script" path="res://scripts/parallax_bg.gd" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/runner.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/monster.tscn" id="4"]
 
 [sub_resource type="RectangleShape2D" id="ground_shape"]
-size = Vector2(1080, 50)
+size = Vector2(500, 20)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1")
-monster_scene = ExtResource("3")
+monster_scene = ExtResource("4")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_right = 1080.0
-offset_bottom = 1920.0
-color = Color(0.05, 0.02, 0.1, 1)
+[node name="ParallaxBG" type="ParallaxBackground" parent="."]
+script = ExtResource("2")
+base_speed = 100.0
+auto_scroll = true
 
-[node name="Runner" parent="." instance=ExtResource("2")]
-position = Vector2(540, 1600)
-
-[node name="SpawnPoint" type="Marker2D" parent="."]
-position = Vector2(540, -100)
-
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(540, 1750)
-
-[node name="GroundCollision" type="CollisionShape2D" parent="Ground"]
-shape = SubResource("ground_shape")
+[node name="Runner" parent="." instance=ExtResource("3")]
+position = Vector2(54, 400)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="DepthLabel" type="Label" parent="UI"]
-offset_left = 40.0
-offset_top = 60.0
-offset_right = 300.0
-offset_bottom = 100.0
-theme_override_font_sizes/font_size = 32
-text = "Depth: 0"
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_top = 30.0
+offset_right = 75.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "DEPTH: 1"
+horizontal_alignment = 1
 
 [node name="FragmentLabel" type="Label" parent="UI"]
-offset_left = 40.0
-offset_top = 100.0
-offset_right = 300.0
-offset_bottom = 140.0
-theme_override_font_sizes/font_size = 24
-text = "Fragments: 0"
+offset_left = 20.0
+offset_top = 740.0
+offset_right = 180.0
+offset_bottom = 775.0
+theme_override_colors/font_color = Color(0.6, 0.4, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "◆ 0"
 
 [node name="HPBar" type="ProgressBar" parent="UI"]
-offset_left = 40.0
-offset_top = 150.0
-offset_right = 300.0
-offset_bottom = 175.0
-max_value = 100.0
+offset_left = 300.0
+offset_top = 745.0
+offset_right = 430.0
+offset_bottom = 770.0
+theme_override_styles/fill = null
 value = 100.0
 show_percentage = false
 
-[node name="ExtractButton" type="Button" parent="UI"]
-offset_left = 800.0
-offset_top = 60.0
-offset_right = 1040.0
-offset_bottom = 110.0
-text = "EXTRACT"
+[node name="GameOverPanel" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="BG" type="ColorRect" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.8)
+
+[node name="Title" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -100.0
+offset_right = 120.0
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 40
+text = "EXTRACTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FragmentsLabel" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -30.0
+offset_right = 120.0
+offset_bottom = 10.0
+theme_override_colors/font_color = Color(0.6, 0.4, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "◆ 0 fragments"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DepthLabel" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 60.0
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 20
+text = "Reached Depth 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TapPrompt" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 120.0
+offset_right = 120.0
+offset_bottom = 150.0
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 16
+text = "tap to run again"
+horizontal_alignment = 1
+vertical_alignment = 1
