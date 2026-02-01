@@ -4,6 +4,7 @@ extends Node
 
 signal depth_changed(new_depth: int)
 signal fragments_changed(new_total: int)
+signal hp_changed(new_hp: int)
 signal player_died
 signal player_extracted
 
@@ -12,47 +13,58 @@ var current_depth: int = 0
 var fragments_this_run: int = 0
 var total_fragments: int = 0
 var is_running: bool = false
+var hp: int = 3
+var max_hp: int = 3
 
 # Upgrades (saved between sessions)
 var upgrades = {
 	"vitality": 0,      # +Max HP
-	"reflexes": 0,      # +Counter window
+	"precision": 0,     # +Hit window
 	"greed": 0,         # +Fragment gain
-	"endurance": 0,     # +Stamina
-	"insight": 0        # +Telegraph time
+	"reach": 0,         # +Attack range
+	"insight": 0        # +Lane telegraph
 }
 
 # Calculated stats based on upgrades
-var max_hp: int:
-	get: return 100 + (upgrades.vitality * 10)
+var calculated_max_hp: int:
+	get: return 3 + upgrades.vitality
 
-var counter_window: float:
-	get: return 0.3 + (upgrades.reflexes * 0.02)
+var hit_window_bonus: float:
+	get: return upgrades.precision * 0.02
 
 var fragment_multiplier: float:
-	get: return 1.0 + (upgrades.greed * 0.05)
+	get: return 1.0 + (upgrades.greed * 0.1)
+
+var attack_range_bonus: float:
+	get: return upgrades.reach * 0.02
 
 func _ready():
 	load_game()
 
 func start_run():
-	current_depth = 0
+	current_depth = 1
 	fragments_this_run = 0
+	max_hp = calculated_max_hp
+	hp = max_hp
 	is_running = true
 	emit_signal("depth_changed", current_depth)
+	emit_signal("hp_changed", hp)
 
 func increase_depth():
 	current_depth += 1
 	emit_signal("depth_changed", current_depth)
-	
-	# Award depth bonus fragments
-	var bonus = int(current_depth * fragment_multiplier)
-	add_fragments(bonus)
 
 func add_fragments(amount: int):
 	var boosted = int(amount * fragment_multiplier)
 	fragments_this_run += boosted
 	emit_signal("fragments_changed", fragments_this_run)
+
+func take_damage(amount: int):
+	hp -= amount
+	emit_signal("hp_changed", hp)
+	
+	if hp <= 0:
+		die()
 
 func die():
 	is_running = false
@@ -76,6 +88,13 @@ func purchase_upgrade(upgrade_name: String, cost: int) -> bool:
 		save_game()
 		return true
 	return false
+
+func get_upgrade_cost(upgrade_name: String) -> int:
+	if not upgrades.has(upgrade_name):
+		return 0
+	var level = upgrades[upgrade_name]
+	# Cost scales with level
+	return (level + 1) * 10
 
 func save_game():
 	var save_data = {

@@ -1,144 +1,152 @@
 extends CharacterBody2D
 class_name Monster
 
-# Base monster class - Shade is the simplest
-
 signal defeated(fragments: int)
-signal attacked_player
 
-enum MonsterType { SHADE, WRAITH, ABYSSAL }
+enum MonsterType { SHADE, WRAITH, SHIFTER, SWARMER, ABYSSAL }
+enum Lane { HIGH = 0, MID = 1, LOW = 2 }
+const LANE_POSITIONS = { 0: 0.3, 1: 0.5, 2: 0.7 }
+
+# Monster data
+const MONSTER_DATA = {
+	MonsterType.SHADE: { "speed": 80, "hp": 50, "fragments": 1, "color": Color(0.3, 0.3, 0.4) },
+	MonsterType.WRAITH: { "speed": 100, "hp": 50, "fragments": 2, "color": Color(0.4, 0.2, 0.5, 0.8) },
+	MonsterType.SHIFTER: { "speed": 90, "hp": 50, "fragments": 3, "color": Color(0.5, 0.3, 0.2) },
+	MonsterType.SWARMER: { "speed": 150, "hp": 30, "fragments": 1, "color": Color(0.6, 0.1, 0.1) },
+	MonsterType.ABYSSAL: { "speed": 50, "hp": 150, "fragments": 5, "color": Color(0.1, 0.1, 0.3) }
+}
 
 @export var monster_type: MonsterType = MonsterType.SHADE
-@export var hp: int = 30
-@export var damage: int = 20
-@export var fragment_reward: int = 10
-@export var telegraph_time: float = 0.8  # Time before attack lands
-@export var counter_window: float = 0.3  # Window for perfect counter
 
-var speed: float = 300.0
-var is_attacking: bool = false
+var hp: int = 50
+var max_hp: int = 50
+var speed: float = 80
+var fragment_value: int = 1
 var is_dead: bool = false
-var player_ref: CharacterBody2D = null
+var current_lane: int = Lane.MID
+var screen_size: Vector2
+
+# Behavior state
+var is_paused: bool = false
+var pause_timer: float = 0.0
+var has_shifted: bool = false
+var shift_timer: float = 0.0
+var horizontal_mode: bool = false
 
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var collision: CollisionShape2D = $CollisionShape2D
-@onready var hitbox: Area2D = $Hitbox
-
-# Sprite textures
-var shade_texture = preload("res://assets/sprites/shade.svg")
-var wraith_texture = preload("res://assets/sprites/wraith.svg")
-var abyssal_texture = preload("res://assets/sprites/abyssal.svg")
 
 func _ready():
-	# Connect hitbox
-	hitbox.body_entered.connect(_on_hitbox_body_entered)
+	apply_monster_type()
+
+func apply_monster_type():
+	var data = MONSTER_DATA[monster_type]
+	speed = data.speed
+	max_hp = data.hp
+	hp = max_hp
+	fragment_value = data.fragments
+	modulate = data.color
 	
-	# Set stats and sprite based on type
+	# Type-specific setup
 	match monster_type:
-		MonsterType.SHADE:
-			hp = 30
-			damage = 20
-			fragment_reward = 10
-			telegraph_time = 0.8
-			speed = 250.0
-			sprite.texture = shade_texture
-			sprite.scale = Vector2(1.2, 1.2)
 		MonsterType.WRAITH:
-			hp = 50
-			damage = 30
-			fragment_reward = 25
-			telegraph_time = 0.5
-			speed = 350.0
-			sprite.texture = wraith_texture
-			sprite.scale = Vector2(1.3, 1.3)
-		MonsterType.ABYSSAL:
-			hp = 100
-			damage = 50
-			fragment_reward = 50
-			telegraph_time = 0.3
-			speed = 200.0
-			sprite.texture = abyssal_texture
-			sprite.scale = Vector2(1.5, 1.5)
+			var tween = create_tween().set_loops()
+			tween.tween_property(self, "modulate:a", 0.4, 0.5)
+			tween.tween_property(self, "modulate:a", 0.8, 0.5)
+		MonsterType.SHIFTER:
+			shift_timer = randf_range(0.5, 1.5)
+
+func setup_horizontal(lane: int, size: Vector2, type: int):
+	horizontal_mode = true
+	current_lane = lane
+	screen_size = size
+	monster_type = type as MonsterType
+	
+	# Position off-screen right
+	position = Vector2(size.x + 50, size.y * LANE_POSITIONS[lane])
+	
+	apply_monster_type()
 
 func _physics_process(delta):
-	if is_dead:
+	if is_dead or not horizontal_mode:
 		return
 	
-	# Move toward player's lane
-	if player_ref:
-		var target_x = player_ref.position.x
-		position.x = move_toward(position.x, target_x, speed * 0.3 * delta)
-	
-	# Move down the screen (toward player)
-	velocity.y = speed
-	move_and_slide()
+	match monster_type:
+		MonsterType.WRAITH:
+			update_wraith(delta)
+		MonsterType.SHIFTER:
+			update_shifter(delta)
+		_:
+			move_toward_runner(delta)
 
-func start_attack():
-	if is_dead or is_attacking:
-		return
-	
-	is_attacking = true
-	
-	# Telegraph the attack
-	# Visual indicator (flash, wind-up animation)
-	modulate = Color.RED
-	
-	# Notify player of incoming attack for counter window
-	if player_ref and player_ref.has_method("on_monster_attack_incoming"):
-		player_ref.on_monster_attack_incoming()
-	
-	await get_tree().create_timer(telegraph_time).timeout
-	
-	if is_dead:
-		return
-	
-	# Execute attack
-	execute_attack()
+func move_toward_runner(delta: float):
+	position.x -= speed * delta
 
-func execute_attack():
-	modulate = Color.WHITE
-	emit_signal("attacked_player")
+func update_wraith(delta: float):
+	if not is_paused and position.x < screen_size.x * 0.6 and pause_timer == 0:
+		if randf() < 0.02:
+			is_paused = true
+			pause_timer = randf_range(0.3, 0.8)
 	
-	# Check if player countered
-	if player_ref and player_ref.has_method("try_counter"):
-		if player_ref.try_counter():
-			# Counter successful! Take massive damage
-			take_damage(hp)  # Instant kill on perfect counter
-			return
+	if is_paused:
+		pause_timer -= delta
+		if pause_timer <= 0:
+			is_paused = false
+	else:
+		move_toward_runner(delta)
+
+func update_shifter(delta: float):
+	if not has_shifted and position.x < screen_size.x * 0.5:
+		shift_timer -= delta
+		if shift_timer <= 0:
+			shift_lane()
+			has_shifted = true
 	
-	# Attack lands
-	if player_ref and player_ref.has_method("take_damage"):
-		player_ref.take_damage(damage)
+	move_toward_runner(delta)
+
+func shift_lane():
+	var lanes = [Lane.HIGH, Lane.MID, Lane.LOW]
+	lanes.erase(current_lane)
+	current_lane = lanes.pick_random()
 	
-	is_attacking = false
+	var tween = create_tween()
+	tween.tween_property(self, "position:y", screen_size.y * LANE_POSITIONS[current_lane], 0.2)
+	
+	# Flash
+	modulate = Color.YELLOW
+	await get_tree().create_timer(0.1).timeout
+	modulate = MONSTER_DATA[monster_type].color
 
 func take_damage(amount: int):
-	hp -= amount
-	
-	# Flash white
-	modulate = Color.WHITE
-	await get_tree().create_timer(0.05).timeout
-	modulate = Color(1, 1, 1, 1)
-	
-	if hp <= 0:
-		die()
-
-func die():
 	if is_dead:
 		return
 	
-	is_dead = true
-	emit_signal("defeated", fragment_reward)
+	hp -= amount
 	
-	# Death animation - dissolve effect
-	var tween = create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, 0.3)
-	tween.tween_callback(queue_free)
+	if hp <= 0:
+		is_dead = true
+		defeated.emit(fragment_value)
+	else:
+		# Hit feedback
+		var original_color = MONSTER_DATA[monster_type].color
+		modulate = Color.WHITE
+		await get_tree().create_timer(0.05).timeout
+		if is_instance_valid(self):
+			modulate = original_color
 
-func _on_hitbox_body_entered(body):
-	if body.is_in_group("player") and not is_dead:
-		player_ref = body
-		start_attack()
+# Legacy vertical mode support
+var player_ref: WeakRef
 
-func set_player(player: CharacterBody2D):
-	player_ref = player
+func set_player(player: Node2D):
+	player_ref = weakref(player)
+
+func _process(_delta):
+	if horizontal_mode or is_dead:
+		return
+	
+	# Old vertical behavior
+	velocity.y = speed
+	move_and_slide()
+	
+	# Check if off screen
+	if position.y > get_viewport_rect().size.y + 100:
+		queue_free()
