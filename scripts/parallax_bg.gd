@@ -19,32 +19,34 @@ func _process(delta):
 func create_default_layers():
 	var screen_size = get_viewport().get_visible_rect().size
 	
-	# Layer 0: Far background (stars/sky) - slowest
-	var layer0 = create_layer(0.1, Color(0.02, 0.01, 0.05), screen_size)
-	add_stars(layer0, 50, screen_size)
+	# Layer 0: Far background (stars/sky) - slowest, WITH background
+	var layer0 = create_layer(0.1, Color(0.02, 0.01, 0.05), screen_size, true)
+	add_stars(layer0, 80, screen_size)
 	
-	# Layer 1: Distant mountains/shapes
-	var layer1 = create_layer(0.3, Color(0.05, 0.02, 0.1), screen_size)
+	# Layer 1: Distant mountains/shapes (no bg, transparent)
+	var layer1 = create_layer(0.3, Color.TRANSPARENT, screen_size, false)
 	add_distant_shapes(layer1, screen_size)
 	
-	# Layer 2: Mid-ground shapes
-	var layer2 = create_layer(0.6, Color(0.08, 0.03, 0.12), screen_size)
+	# Layer 2: Mid-ground shapes (no bg, transparent)
+	var layer2 = create_layer(0.6, Color.TRANSPARENT, screen_size, false)
 	add_mid_shapes(layer2, screen_size)
 	
-	# Layer 3: Near ground/fog - fastest
-	var layer3 = create_layer(0.9, Color(0.1, 0.04, 0.15), screen_size)
+	# Layer 3: Near ground/fog - fastest (no bg, transparent)
+	var layer3 = create_layer(0.9, Color.TRANSPARENT, screen_size, false)
 	add_ground_fog(layer3, screen_size)
 
-func create_layer(motion_scale: float, base_color: Color, screen_size: Vector2) -> ParallaxLayer:
+func create_layer(motion_scale: float, base_color: Color, screen_size: Vector2, has_bg: bool = false) -> ParallaxLayer:
 	var layer = ParallaxLayer.new()
 	layer.motion_scale = Vector2(motion_scale, 0)
 	layer.motion_mirroring = Vector2(screen_size.x * 2, 0)
 	
-	# Background color rect (tiled)
-	var bg = ColorRect.new()
-	bg.size = Vector2(screen_size.x * 2, screen_size.y)
-	bg.color = base_color
-	layer.add_child(bg)
+	# Only add background to the base layer
+	if has_bg:
+		var bg = ColorRect.new()
+		bg.size = Vector2(screen_size.x * 2, screen_size.y)
+		bg.color = base_color
+		bg.z_index = -10
+		layer.add_child(bg)
 	
 	add_child(layer)
 	return layer
@@ -52,18 +54,21 @@ func create_layer(motion_scale: float, base_color: Color, screen_size: Vector2) 
 func add_stars(layer: ParallaxLayer, count: int, screen_size: Vector2):
 	for i in range(count):
 		var star = ColorRect.new()
-		var size = randf_range(1, 3)
+		var size = randf_range(2, 5)
 		star.size = Vector2(size, size)
 		star.position = Vector2(
 			randf() * screen_size.x * 2,
-			randf() * screen_size.y * 0.6  # Upper portion
+			randf() * screen_size.y * 0.7  # Upper portion
 		)
-		star.color = Color(1, 1, 1, randf_range(0.3, 0.8))
+		# Brighter stars with slight color variation
+		var brightness = randf_range(0.7, 1.0)
+		star.color = Color(brightness, brightness, brightness * randf_range(0.8, 1.0), 1.0)
+		star.z_index = 1
 		layer.add_child(star)
 		
 		# Twinkle animation
 		var tween = create_tween().set_loops()
-		tween.tween_property(star, "modulate:a", randf_range(0.2, 0.5), randf_range(0.5, 2.0))
+		tween.tween_property(star, "modulate:a", randf_range(0.3, 0.6), randf_range(0.5, 2.0))
 		tween.tween_property(star, "modulate:a", 1.0, randf_range(0.5, 2.0))
 
 func add_distant_shapes(layer: ParallaxLayer, screen_size: Vector2):
