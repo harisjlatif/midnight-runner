@@ -1,19 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://monster_scene"]
+[gd_scene load_steps=6 format=3 uid="uid://monster_scene"]
 
 [ext_resource type="Script" path="res://scripts/monster.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/shade.svg" id="2"]
 
 [sub_resource type="RectangleShape2D" id="monster_shape"]
-size = Vector2(50, 80)
+size = Vector2(50, 70)
 
 [sub_resource type="RectangleShape2D" id="hitbox_shape"]
-size = Vector2(80, 120)
+size = Vector2(70, 100)
 
 [node name="Monster" type="CharacterBody2D" groups=["monster"]]
 script = ExtResource("1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(50, 80)
-modulate = Color(0.6, 0.1, 0.2, 1)
+texture = ExtResource("2")
+scale = Vector2(1.2, 1.2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("monster_shape")

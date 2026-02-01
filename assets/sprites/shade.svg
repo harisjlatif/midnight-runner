@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="80" viewBox="0 0 64 80">
+  <defs>
+    <linearGradient id="shadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2d1f4e"/>
+      <stop offset="100%" style="stop-color:#1a0a2e;stop-opacity:0.5"/>
+    </linearGradient>
+    <filter id="shadeGlow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Wispy body -->
+  <path d="M32 5 
+           Q50 15 48 35 
+           Q52 50 45 65
+           Q40 80 32 75
+           Q24 80 19 65
+           Q12 50 16 35
+           Q14 15 32 5" 
+        fill="url(#shadeGrad)" filter="url(#shadeGlow)"/>
+  
+  <!-- Inner darkness -->
+  <ellipse cx="32" cy="40" rx="12" ry="20" fill="#0a0515" opacity="0.8"/>
+  
+  <!-- Eyes (menacing red) -->
+  <ellipse cx="25" cy="30" rx="4" ry="3" fill="#ff4466" filter="url(#shadeGlow)"/>
+  <ellipse cx="39" cy="30" rx="4" ry="3" fill="#ff4466" filter="url(#shadeGlow)"/>
+  
+  <!-- Wispy tendrils -->
+  <path d="M20 60 Q15 70 10 75" stroke="#2d1f4e" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M44 60 Q49 70 54 75" stroke="#2d1f4e" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M28 65 Q25 75 22 80" stroke="#1a0a2e" stroke-width="2" fill="none" opacity="0.4"/>
+  <path d="M36 65 Q39 75 42 80" stroke="#1a0a2e" stroke-width="2" fill="none" opacity="0.4"/>
+</svg>

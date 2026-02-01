@@ -24,11 +24,16 @@ var player_ref: CharacterBody2D = null
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var hitbox: Area2D = $Hitbox
 
+# Sprite textures
+var shade_texture = preload("res://assets/sprites/shade.svg")
+var wraith_texture = preload("res://assets/sprites/wraith.svg")
+var abyssal_texture = preload("res://assets/sprites/abyssal.svg")
+
 func _ready():
 	# Connect hitbox
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 	
-	# Set stats based on type
+	# Set stats and sprite based on type
 	match monster_type:
 		MonsterType.SHADE:
 			hp = 30
@@ -36,18 +41,24 @@ func _ready():
 			fragment_reward = 10
 			telegraph_time = 0.8
 			speed = 250.0
+			sprite.texture = shade_texture
+			sprite.scale = Vector2(1.2, 1.2)
 		MonsterType.WRAITH:
 			hp = 50
 			damage = 30
 			fragment_reward = 25
 			telegraph_time = 0.5
 			speed = 350.0
+			sprite.texture = wraith_texture
+			sprite.scale = Vector2(1.3, 1.3)
 		MonsterType.ABYSSAL:
 			hp = 100
 			damage = 50
 			fragment_reward = 50
 			telegraph_time = 0.3
 			speed = 200.0
+			sprite.texture = abyssal_texture
+			sprite.scale = Vector2(1.5, 1.5)
 
 func _physics_process(delta):
 	if is_dead:

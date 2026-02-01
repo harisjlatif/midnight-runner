@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="96" viewBox="0 0 64 96">
+  <defs>
+    <linearGradient id="wraithGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a3a7a;stop-opacity:0.9"/>
+      <stop offset="50%" style="stop-color:#2a1a5a;stop-opacity:0.7"/>
+      <stop offset="100%" style="stop-color:#1a0a3a;stop-opacity:0.3"/>
+    </linearGradient>
+    <filter id="wraithGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Ethereal body -->
+  <ellipse cx="32" cy="35" rx="20" ry="25" fill="url(#wraithGrad)" filter="url(#wraithGlow)"/>
+  
+  <!-- Phasing effect (multiple layers) -->
+  <ellipse cx="28" cy="35" rx="18" ry="23" fill="#3a2a6a" opacity="0.3"/>
+  <ellipse cx="36" cy="35" rx="18" ry="23" fill="#3a2a6a" opacity="0.3"/>
+  
+  <!-- Hollow face -->
+  <ellipse cx="32" cy="30" rx="10" ry="12" fill="#0a0515"/>
+  
+  <!-- Eyes (cold blue) -->
+  <circle cx="27" cy="28" r="4" fill="#66ccff" filter="url(#wraithGlow)"/>
+  <circle cx="37" cy="28" r="4" fill="#66ccff" filter="url(#wraithGlow)"/>
+  <circle cx="27" cy="28" r="2" fill="#ffffff"/>
+  <circle cx="37" cy="28" r="2" fill="#ffffff"/>
+  
+  <!-- Flowing bottom -->
+  <path d="M12 50 Q20 70 15 96" stroke="url(#wraithGrad)" stroke-width="8" fill="none" opacity="0.6"/>
+  <path d="M52 50 Q44 70 49 96" stroke="url(#wraithGrad)" stroke-width="8" fill="none" opacity="0.6"/>
+  <path d="M25 55 Q28 75 24 96" stroke="url(#wraithGrad)" stroke-width="6" fill="none" opacity="0.4"/>
+  <path d="M39 55 Q36 75 40 96" stroke="url(#wraithGrad)" stroke-width="6" fill="none" opacity="0.4"/>
+  <path d="M32 58 Q32 80 32 96" stroke="url(#wraithGrad)" stroke-width="5" fill="none" opacity="0.3"/>
+</svg>

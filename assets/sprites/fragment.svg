@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="fragmentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#aa88ff"/>
+      <stop offset="50%" style="stop-color:#7b68ee"/>
+      <stop offset="100%" style="stop-color:#5544aa"/>
+    </linearGradient>
+    <filter id="fragmentGlow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Crystal shard shape -->
+  <polygon points="16,2 24,10 22,22 16,30 10,22 8,10" 
+           fill="url(#fragmentGrad)" filter="url(#fragmentGlow)"/>
+  
+  <!-- Inner facets -->
+  <polygon points="16,5 20,10 16,18 12,10" fill="#ccbbff" opacity="0.5"/>
+  <polygon points="16,18 20,10 19,20 16,26" fill="#8866cc" opacity="0.4"/>
+  <polygon points="16,18 12,10 13,20 16,26" fill="#6644aa" opacity="0.4"/>
+  
+  <!-- Bright center -->
+  <ellipse cx="16" cy="12" rx="3" ry="4" fill="#ffffff" opacity="0.6"/>
+</svg>
